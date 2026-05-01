@@ -1,4 +1,4 @@
-module line_counter(
+module line_counter #(
     parameter V_SYNC = 5,
     parameter V_BP = 20,
     parameter V_ACTIVE = 1080,
@@ -10,11 +10,9 @@ module line_counter(
     //
     input wire line_end,
     //
-    output reg [11:0] v_cnt,
-    output wire frame_end
+    output reg [11:0] v_cnt
 );
 
-    assign frame_end = line_end && (v_cnt == V_TOTAL - 1);
 
 always @(posedge CLK or negedge rst_n) begin
     if (!rst_n) begin

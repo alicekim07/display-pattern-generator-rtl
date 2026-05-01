@@ -24,7 +24,6 @@ module ptn_gen #(
     wire line_end;
 
     wire [11:0] v_cnt;
-    wire frame_end;
 
     wire h_active;
     wire v_active;
@@ -56,8 +55,7 @@ module ptn_gen #(
         .CLK(CLK),
         .rst_n(rst_n),
         .line_end(line_end),
-        .v_cnt(v_cnt),
-        .frame_end(frame_end)
+        .v_cnt(v_cnt)
     );
 
     // frame timing generator

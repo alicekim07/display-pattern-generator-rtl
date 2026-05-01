@@ -1,4 +1,4 @@
-module pixel_counter(
+module pixel_counter #(
     parameter H_ACTIVE = 1920,
     parameter H_BLANK = 160,
     parameter H_TOTAL = H_ACTIVE + H_BLANK
@@ -6,7 +6,7 @@ module pixel_counter(
     input wire CLK,
     input wire rst_n,
     //
-    output wire [11:0] h_cnt,
+    output reg [11:0] h_cnt,
     output wire line_end
 );
 

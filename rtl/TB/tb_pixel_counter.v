@@ -36,10 +36,25 @@ module tb_pixel_counter;
 		$display("[TB] pixel_counter test start");
 
 		repeat (3) @(posedge CLK);
+		@(negedge CLK);
 		rst_n = 1'b1;
+
+
+		// reset 해제 직후 h_cnt가 0인지 먼저 확인
+		#1;
+		if (h_cnt !== 12'd0) begin
+			$display("[FAIL] after reset release expected h_cnt=0, got=%0d", h_cnt);
+			$fatal;
+		end
 
 		for (cycle = 0; cycle < (H_TOTAL_TB * 3 + 5); cycle = cycle + 1) begin
 			@(posedge CLK);
+			#1;
+
+			if (expected_cnt == H_TOTAL_TB - 1)
+				expected_cnt = 0;
+			else
+				expected_cnt = expected_cnt + 1;
 
 			if (h_cnt !== expected_cnt[11:0]) begin
 				$display("[FAIL] cycle=%0d expected h_cnt=%0d, got=%0d", cycle, expected_cnt, h_cnt);
@@ -50,15 +65,12 @@ module tb_pixel_counter;
 				$display("[FAIL] cycle=%0d expected line_end=%0d, got=%0d", cycle, (expected_cnt == H_TOTAL_TB - 1), line_end);
 				$fatal;
 			end
-
-			if (expected_cnt == H_TOTAL_TB - 1)
-				expected_cnt = 0;
-			else
-				expected_cnt = expected_cnt + 1;
 		end
 
 		rst_n = 1'b0;
 		@(posedge CLK);
+		#1;
+
 		if (h_cnt !== 12'd0) begin
 			$display("[FAIL] reset assertion failed, h_cnt=%0d", h_cnt);
 			$fatal;

@@ -1,4 +1,4 @@
-module de_generator(
+module de_generator #(
     input wire CLK,
     input wire rst_n,
     //
